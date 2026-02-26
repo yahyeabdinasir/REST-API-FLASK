@@ -1,0 +1,27 @@
+# Python-specific
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+.Python
+build/
+dist/
+*.egg-info/
+
+# Flask instance folder (contains configuration/database files)
+instance/
+
+# Environment variables (contains sensitive API keys, passwords, etc.)
+.env
+.flaskenv
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE-specific files (optional, can also be added to a global gitignore)
+.idea/
+.vscode/
+*.sublime-workspace
