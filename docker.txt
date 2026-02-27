@@ -1,0 +1,80 @@
+docker run hello-world   testing the docker if it's runing or not
+
+
+Docker wuxuu ka kooban yahay:
+
+Qayb	Macnaha
+Image	Blueprint (sawirka app)
+Container	Image oo la orodsiiyay
+Dockerfile	File aad ku qorto sida image loo dhisayo
+
+
+docker ps          # containers socda
+docker ps -a       # dhammaan containers
+docker images      # images
+docker stop ID     # jooji container
+docker rm ID       # tirtir container
+
+
+//basic set up of the docker file
+
+from pyhon:3.10
+EXPOSR "5000"
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+
+
+COPY . .
+
+CMD ["python" , "app.py"]
+
+
+
+//then building the docker image
+ docker build -t flask-app .
+
+
+ // runing the container
+ docker run -p 5000:5000 flask-app
+ http://localhost:5000  // now we can visit that url
+
+
+
+
+
+
+
+
+
+
+
+
+ Waa maxay Docker Compose?
+
+Docker Compose wuxuu kuu ogolaanayaa inaad:
+
+Hal mar wada orodsiiso multiple containers
+
+Tusaale:
+
+Flask API
+
+PostgreSQL Database
+
+Redis
+
+Hal file ayaad ku maamushaa dhammaan
+
+Taasi waa waxa real backend systems isticmaalaan
+
+
+
+
+
+// docker version
+docker compose version
+
+
+// and also this command it's used to run the docker compose
+ docker compose up

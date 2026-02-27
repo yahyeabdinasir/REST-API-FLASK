@@ -50,9 +50,6 @@ def createitems(name):
                 'product' : get_request_Data['product'],
                 'price' : get_request_Data['price']
             }
-
-
-
             store['items'].append(newItem)
             return jsonify(newItem), 201
 
@@ -64,5 +61,31 @@ def createitems(name):
 
 
 
+@app.get("/store/<string:name>")
+def getStore(name):
+    for store in  mystrore:
+        if store['name'] == name:
+            return jsonify(store)
+    return jsonify("not  found the store")
+
+
+
+@app.get("/store/<string:name>/items")
+def getSpecificItems(name):
+    for store in  mystrore:
+        if store['name'] == name:
+            return  jsonify({
+                'items' : store['items']
+            })
+
+    return jsonify("not  found the store")
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0" , port=5000)
