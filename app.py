@@ -1,91 +1,63 @@
 import app
-import flask
+import uuid
+from db import mystrore, myitems
 
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-mystrore = [
-    {
-        'name': 'my store',
-        'items': [
-            {
-                'product': 'snack',
-                'price': 20
-            }
-
-        ]
-
-    },
-]
-
 
 @app.get('/store')
-def home():
-    return jsonify({
-        'myStore': mystrore
-
-    })
+def getStore():
+    return list(mystrore.values())
 
 
 # request.get_json() returns a python dect or none if no json was sent
 # it's also means get the incoming data from the client
 @app.post("/store")
 def postStore():
-    get_request_Data = request.get_json()
+    requestdata = request.get_json()
     # this will add the posted data into the  store list with null items list
-    new_store = {'name': get_request_Data['name'], 'items': []}
-    mystrore.append(new_store)
-
-    print(get_request_Data)
-    return jsonify(new_store), 201
-
-
-@app.post('/store/<string:name>/')
-def createitems(name):
-    get_request_Data = request.get_json()
-    for store in mystrore:
-        if store['name'] == name:
-            newItem = {
-                'product' : get_request_Data['product'],
-                'price' : get_request_Data['price']
-            }
-            store['items'].append(newItem)
-            return jsonify(newItem), 201
+    store_id = uuid.uuid4().hex
+    store = {**requestdata, "ids": store_id}
+    mystrore[store_id] = store
+    return jsonify(store), 201
 
 
-    return jsonify({
-        'messeage': 'there is no data found'
-    }), 404
+@app.post('/item/')
+def createitems():
+    items_Data = request.get_json()
+    if items_Data['store_id'] not in mystrore:
+        return jsonify({
+            'massege': "store id not found "
+        })
+    item_id = uuid.uuid4().hex
+    itemWith_id = {**items_Data, "item id": item_id}
+    myitems[item_id] = itemWith_id
+    return jsonify(itemWith_id), 201
 
 
+@app.get("/item")
+def getallitem():
+    return jsonify({"items": list(myitems.values())})
 
 
-@app.get("/store/<string:name>")
-def getStore(name):
-    for store in  mystrore:
-        if store['name'] == name:
-            return jsonify(store)
-    return jsonify("not  found the store")
+# now we have accessing the store id from the sore dictionaries
+@app.get("/store/<string:store_id>")
+def getspecificStore(store_id):
+    try:
+        return jsonify(mystrore[store_id])
+    except KeyError:
+        return jsonify("the items id not found ")
 
 
-
-@app.get("/store/<string:name>/items")
-def getSpecificItems(name):
-    for store in  mystrore:
-        if store['name'] == name:
-            return  jsonify({
-                'items' : store['items']
-            })
-
-    return jsonify("not  found the store")
-
-
-
-
-
-
+@app.get("/items/<string:items_ids>")
+def getSpecificItems(items_ids):
+    try:
+        return jsonify(myitems[items_ids])
+    except KeyError:
+        return jsonify("not  found the the items id ")
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0" , port=5000)
+    app.run(host="0.0.0.0", port=5000)
