@@ -1,6 +1,6 @@
 
 
-mystrore ={},
+mystrore ={}
 myitems = {}
 
     # 'name': 'my store',
