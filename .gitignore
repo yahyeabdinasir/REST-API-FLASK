@@ -8,6 +8,7 @@ env/
 build/
 dist/
 *.egg-info/
+note
 
 # Flask instance folder (contains configuration/database files)
 instance/
